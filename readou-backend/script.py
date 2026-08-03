@@ -1,12 +1,14 @@
 import requests
 import psycopg
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 conn = psycopg.connect(
-    host="localhost",
-    dbname="test",
-    user="ed",
-    password="arcmekit711",
-    port=5432
+  DATABASE_URL
 )
 cur = conn.cursor()
 
