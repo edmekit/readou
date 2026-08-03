@@ -1,8 +1,7 @@
 function Reviews(){
     return (
-        <div>
-            <img/>
-            <h3>name</h3>
+        <div className="review">
+            <h3>Ratings</h3>
             <p>reviewed</p>
         </div>
     )

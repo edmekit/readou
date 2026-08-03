@@ -1,9 +1,8 @@
 function Lists(){
     return (
-        <div>
-            <img/>
-            <h3>name</h3>
-            <p>reviewed</p>
+        <div className="list">
+            <h3>Lists</h3>
+            <p>Curated readlists</p>
         </div>
     )
 }
