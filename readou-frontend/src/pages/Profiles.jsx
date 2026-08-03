@@ -1,10 +1,5 @@
-import Goat from "./components/Goat.jsx"
-import Lists from "./components/Lists.jsx"
-import Profile from "./components/Profile.jsx"
-import Reviews from "./components/Reviews.jsx"
-
-function App(){
-    return (
+function Profile(){
+        return (
         <div>
             <nav className="flex justify-between items-center p-4">
                 <div className="text-2xl font-bold">
@@ -33,5 +28,3 @@ function App(){
         </div>
     )
 }
-
-export default App
