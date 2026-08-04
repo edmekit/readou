@@ -1,15 +1,13 @@
-function Profile(){
+import Goat from "../components/Goat.jsx"
+import Lists from "../components/Lists.jsx"
+import Profile from "../components/Profile.jsx"
+import Reviews from "../components/Reviews.jsx"
+import Navbar from "../components/Navbar.jsx"
+
+function Profiles(){
         return (
         <div>
-            <nav className="flex justify-between items-center p-4">
-                <div className="text-2xl font-bold">
-                    Readou
-                </div>
-                <div className="flex gap-6">
-                    <a href="#">Recent Stories</a>
-                    <a href="#">Profile</a>
-                </div>
-            </nav>
+            <Navbar/>
             <div className="flex flex-row bg-slate-500 w-384 h-194 App">
                 <div className="w-120 h-170 bg-white m-5  profile">
                     <header>Readou</header>
@@ -28,3 +26,5 @@ function Profile(){
         </div>
     )
 }
+
+export default Profiles
