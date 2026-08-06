@@ -52,7 +52,7 @@ for m in manga:
             m["id"],
             m["title"]["romaji"],
             m["coverImage"]["large"],
-        ),
+        ),         
     )
 
 conn.commit()
