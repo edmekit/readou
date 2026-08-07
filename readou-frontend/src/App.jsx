@@ -7,7 +7,7 @@ function App(){
     return (
         <BrowserRouter>
         <Routes>
-            <Route path="/" element={<Profiles/>}/>
+            <Route path="/profile" element={<Profiles/>}/>
             <Route path="/community" element={<Community/>}/>
             <Route path="/stories" element={<Stories/>}/>
         </Routes>

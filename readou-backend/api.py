@@ -28,3 +28,14 @@ def get_stories():
             ORDER BY id
             """)
             return cur.fetchall()
+
+@app.get('/profile')
+def profile():
+    with psycopg.connect(DATABASE_URL) as conn:
+        with conn.cursor(row_factory = dict_row) as cur:
+            cur.execute("""
+            SELECT user_id, user_pfp, user_name
+            FROM users
+            ORDER BY user_id
+            """)
+            return cur.fetchall()

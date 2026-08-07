@@ -8,7 +8,7 @@ function Navbar(){
             <div className="flex gap-6">
                 <Link to="/community">Community</Link>
                 <Link to="/stories">Stories</Link>
-                <Link to="/">Profile</Link>
+                <Link to="/profile">Profile</Link>
             </div>
         </nav>
     )

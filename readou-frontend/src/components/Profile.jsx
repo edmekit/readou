@@ -1,8 +1,8 @@
-function Profile(){
+function Profile({ user }){
     return (
         <div>
-            <img/>
-            <h3>name</h3>
+            <img src={user.user_pfp}/>
+            <h3>{user.user_name}</h3>
             <p>reviewed</p>
         </div>
     )
