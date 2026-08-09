@@ -38,4 +38,21 @@ def profile():
             FROM users
             ORDER BY user_id
             """)
-            return cur.fetchall()
+            user_info =  cur.fetchall()
+
+            cur.execute("""
+            SELECT m.*
+            FROM goat g
+            JOIN manga m
+            ON g.manga_id = m.id WHERE g.user_id = 1;
+            """)
+            user_goat = cur.fetchall()
+
+            cur.execute("""
+            SELECT l.*
+            FROM lists l
+            WHERE l.user_id = 1;
+            """)
+            user_lists = cur.fetchall()
+
+            return {"user_info": user_info, "user_goat": user_goat, "user_lists": user_lists}

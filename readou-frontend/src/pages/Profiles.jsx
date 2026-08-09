@@ -7,10 +7,21 @@ import { useState, useEffect } from "react"
 
 function Profiles(){
         const [profiles, setProfiles] = useState([])
+        const [goats, setGoats] = useState([])
+        const [lists , setLists] = useState([])
         useEffect(() => {
-            fetch('http://127.0.0.1:8000/profile')
-            .then(res => res.json())
-            .then(data => setProfiles(data));
+            async function fetchProfiles() {
+                try {
+                    const response = await fetch('http://127.0.0.1:8000/profile');
+                    const data = await response.json();
+                    setProfiles(data.user_info);
+                    setGoats(data.user_goat);
+                    setLists(data.user_lists);
+                } catch (error) {
+                    console.error('Error fetching profiles:', error);
+                }
+            }
+            fetchProfiles();
         }, []);
 
 
@@ -28,11 +39,13 @@ function Profiles(){
                     )}
                 </div>
                 <div className="flex flex-col bg-white h-170 w-240 m-5 content">
-                    <div className="bg-blue-400 flex flex-row h-70 justify-center items-center ">
-                        <Goat/>
+                    <header>Goat</header>
+                    <div className="bg-blue-400 flex justify-center items-center ">
+                        <Goat 
+                        goat={goats}/>
                     </div>
-                    <div className="flex flex-row bg-green-400 justify-center items-center h-80 gap-15">
-                        <Lists/>
+                    <div className="flex flex-row bg-green-400 justify-center items-center gap-15">
+                        <Lists lists={lists}/>
                         <Reviews/>
                     </div>
                 </div>
