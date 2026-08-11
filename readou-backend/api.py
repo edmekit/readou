@@ -51,8 +51,36 @@ def profile():
             cur.execute("""
             SELECT l.*
             FROM lists l
-            WHERE l.user_id = 1;
+            WHERE l.user_id = 1
+            LIMIT 3;
             """)
             user_lists = cur.fetchall()
 
             return {"user_info": user_info, "user_goat": user_goat, "user_lists": user_lists}
+
+@app.get('/profile/lists')
+def profile_lists():
+    with psycopg.connect(DATABASE_URL) as conn:
+        with conn.cursor(row_factory = dict_row) as cur:
+            cur.execute("""
+            SELECT l.*
+            FROM lists l
+            WHERE l.user_id = 1;
+            """)
+            return cur.fetchall()
+
+@app.get('/profile/lists/{list_id}')
+def list_content(list_id: int):
+    with psycopg.connect(DATABASE_URL) as conn:
+        with conn.cursor(row_factory = dict_row) as cur:
+            cur.execute(""" 
+            SELECT
+                m.*
+            FROM lists l
+            JOIN per_list pl
+                ON l.list_id = pl.list_id
+            JOIN manga m
+                ON pl.manga_id = m.id
+            WHERE l.user_id = 1 AND l.list_id = %s
+            """, (list_id,))
+            return cur.fetchall()

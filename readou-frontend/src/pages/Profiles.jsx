@@ -40,11 +40,11 @@ function Profiles(){
                 </div>
                 <div className="flex flex-col bg-white h-170 w-240 m-5 content">
                     <header>Goat</header>
-                    <div className="bg-blue-400 flex justify-center items-center ">
+                    <div className="flex justify-center items-center">
                         <Goat 
                         goat={goats}/>
                     </div>
-                    <div className="flex flex-row bg-green-400 justify-center items-center gap-15">
+                    <div className="flex flex-row justify-center items-center gap-15">
                         <Lists lists={lists}/>
                         <Reviews/>
                     </div>
