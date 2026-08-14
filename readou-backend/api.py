@@ -4,6 +4,13 @@ import psycopg
 from psycopg.rows import dict_row
 from dotenv import load_dotenv
 import os
+from pydantic import BaseModel
+
+class User(BaseModel):
+    username: str
+    password: str
+
+
 
 load_dotenv()
 
@@ -29,8 +36,8 @@ def get_stories():
             """)
             return cur.fetchall()
 
-@app.get('/profile')
-def profile():
+@app.get('/{user_id}/profile')
+def profile(user_id: int):
     with psycopg.connect(DATABASE_URL) as conn:
         with conn.cursor(row_factory = dict_row) as cur:
             cur.execute("""
@@ -44,21 +51,21 @@ def profile():
             SELECT m.*
             FROM goat g
             JOIN manga m
-            ON g.manga_id = m.id WHERE g.user_id = 1;
-            """)
+            ON g.manga_id = m.id WHERE g.user_id = %s;
+            """, (user_id,))
             user_goat = cur.fetchall()
 
             cur.execute("""
             SELECT l.*
             FROM lists l
-            WHERE l.user_id = 1
+            WHERE l.user_id = %s
             LIMIT 3;
-            """)
+            """, (user_id,))
             user_lists = cur.fetchall()
 
             return {"user_info": user_info, "user_goat": user_goat, "user_lists": user_lists}
 
-@app.get('/profile/lists')
+@app.get('/{user_id}/profile/lists')
 def profile_lists():
     with psycopg.connect(DATABASE_URL) as conn:
         with conn.cursor(row_factory = dict_row) as cur:
@@ -69,7 +76,7 @@ def profile_lists():
             """)
             return cur.fetchall()
 
-@app.get('/profile/lists/{list_id}')
+@app.get('/{user_id}/profile/lists/{list_id}')
 def list_content(list_id: int):
     with psycopg.connect(DATABASE_URL) as conn:
         with conn.cursor(row_factory = dict_row) as cur:
@@ -84,3 +91,25 @@ def list_content(list_id: int):
             WHERE l.user_id = 1 AND l.list_id = %s
             """, (list_id,))
             return cur.fetchall()
+
+@app.post('/register')
+def register(user: User):
+    with psycopg.connect(DATABASE_URL) as conn:
+        with conn.cursor(row_factory = dict_row) as cur:
+            cur.execute("""
+            INSERT INTO registered_user (username,password)
+            VALUES (%s, %s)
+            RETURNING user_id
+            """, (user.username, user.password))
+            return cur.fetchone()
+
+@app.post('/login')
+def login(user: User):
+    with psycopg.connect(DATABASE_URL) as conn:
+        with conn.cursor(row_factory = dict_row) as cur:
+            cur.execute("""
+            SELECT user_id
+            FROM registered_user
+            WHERE username = %s AND password = %s
+            """, (user.username, user.password))
+            return cur.fetchone()

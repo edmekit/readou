@@ -4,11 +4,12 @@ import ReviewCard from "../components/ReviewCard";
 import { useState, useEffect, useMemo } from "react";
 
 function Stories(){
+    const user_id = localStorage.getItem('user_id');
     const [stories, setStories] = useState([])
     const [selectedStory, setSelectedStory] = useState(null);
     const [search, setSearch] = useState('');
     useEffect(() => {
-        fetch('http://127.0.0.1:8000/stories')
+        fetch(`http://127.0.0.1:8000/stories`)
         .then(res => res.json())
         .then(data => setStories(data));
     }, []);

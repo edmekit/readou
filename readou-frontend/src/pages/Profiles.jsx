@@ -6,13 +6,18 @@ import Navbar from "../components/Navbar.jsx"
 import { useState, useEffect } from "react"
 
 function Profiles(){
+    const user_id = localStorage.getItem('user_id');
+      if (!user_id) {
+    console.log("No user_id found, user is not logged in");
+    return;
+  }
         const [profiles, setProfiles] = useState([])
         const [goats, setGoats] = useState([])
         const [lists , setLists] = useState([])
         useEffect(() => {
             async function fetchProfiles() {
                 try {
-                    const response = await fetch('http://127.0.0.1:8000/profile');
+                    const response = await fetch(`http://127.0.0.1:8000/${user_id}/profile`);
                     const data = await response.json();
                     setProfiles(data.user_info);
                     setGoats(data.user_goat);

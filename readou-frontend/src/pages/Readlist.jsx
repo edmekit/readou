@@ -3,12 +3,13 @@ import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 
 function Readlist() {
+    const user_id = localStorage.getItem('user_id');
     const [lists, setLists] = useState([]);
 
     useEffect(() => {
         async function fetchLists() {
             try {
-                const response = await fetch('http://127.0.0.1:8000/profile/lists');
+                const response = await fetch(`http://127.0.0.1:8000/${user_id}profile/lists`);
                 const data = await response.json();
                 setLists(data);
             } catch (error) {
