@@ -1,6 +1,7 @@
 import { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 function Login() {
+    const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
@@ -17,9 +18,10 @@ function Login() {
         const data = await response.json();
         console.log("login response:", data);
 
-        if (data && data.user_id) {
+        if (response.ok && data && data.user_id) {
             localStorage.setItem('user_id', String(data.user_id));
             console.log("stored user_id:", data.user_id);
+            navigate('/profile');
         } else {
             console.log("No user_id returned from backend");
         }
