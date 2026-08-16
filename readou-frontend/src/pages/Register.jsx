@@ -4,7 +4,8 @@ function Register() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     
-    async function register() {
+    async function register(e) {
+        e.preventDefault();
         const response = await fetch('http://127.0.0.1:8000/register', {
             method: 'POST',
             headers: {
@@ -20,7 +21,7 @@ function Register() {
         <div className="flex flex-col items-center justify-center h-screen">
             <Link to ="/login">Login</Link>
         <form className="flex flex-col border-2 border-black p-5 w-100 h-90"
-        onSubmit={() => register()}>
+        onSubmit={register}>
             <input type="text" value={username}
              onChange={(e) => setUsername(e.target.value)}
             placeholder="Username" />

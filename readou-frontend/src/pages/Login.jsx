@@ -4,9 +4,11 @@ function Login() {
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
     async function login(e) {
         e.preventDefault();
+        setError('');
 
         const response = await fetch('http://127.0.0.1:8000/login', {
             method: 'POST',
@@ -23,12 +25,14 @@ function Login() {
             console.log("stored user_id:", data.user_id);
             navigate('/profile');
         } else {
+            setError('Invalid username or password');
             console.log("No user_id returned from backend");
         }
     }
 
     return (
         <div className="flex flex-col items-center justify-center h-screen">
+            {error && <p className="text-red-500">{error}</p>}
             <form className="flex flex-col border-2 border-black p-5 w-100 h-90"
             onSubmit={(e) => login(e)}>
                 <input type="text" value={username}

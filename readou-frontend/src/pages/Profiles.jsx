@@ -7,19 +7,22 @@ import { useState, useEffect } from "react"
 
 function Profiles(){
     const user_id = localStorage.getItem('user_id');
-      if (!user_id) {
-    console.log("No user_id found, user is not logged in");
-    return;
-  }
-        const [profiles, setProfiles] = useState([])
-        const [goats, setGoats] = useState([])
-        const [lists , setLists] = useState([])
+    const [profile, setProfile] = useState([])
+    const [goats, setGoats] = useState([])
+    const [lists , setLists] = useState([])
+      
+
+
         useEffect(() => {
+        if (!user_id) {
+            console.log("No user_id found, user is not logged in");
+            return;
+        }
             async function fetchProfiles() {
                 try {
                     const response = await fetch(`http://127.0.0.1:8000/${user_id}/profile`);
                     const data = await response.json();
-                    setProfiles(data.user_info);
+                    setProfile(data.user_info);
                     setGoats(data.user_goat);
                     setLists(data.user_lists);
                 } catch (error) {
@@ -36,12 +39,10 @@ function Profiles(){
             <div className="flex flex-row bg-slate-500 w-384 h-194 App">
                 <div className="w-120 h-170 bg-white m-5  profile">
                     <header>Readou</header>
-                    {profiles.length > 0 && (
                         <Profile
-                            user={profiles[0]}
-                            key={profiles[0].user_id}
+                            user={profile}
+                            key={profile.user_id}
                         />
-                    )}
                 </div>
                 <div className="flex flex-col bg-white h-170 w-240 m-5 content">
                     <header>Goat</header>

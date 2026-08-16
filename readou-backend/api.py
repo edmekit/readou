@@ -41,11 +41,11 @@ def profile(user_id: int):
     with psycopg.connect(DATABASE_URL) as conn:
         with conn.cursor(row_factory = dict_row) as cur:
             cur.execute("""
-            SELECT user_id, user_pfp, user_name
-            FROM users
-            ORDER BY user_id
-            """)
-            user_info =  cur.fetchall()
+                SELECT user_id, user_pfp, user_name
+                FROM users
+                WHERE user_id = %s
+            """, (user_id,))
+            user_info = cur.fetchone()
 
             cur.execute("""
             SELECT m.*
@@ -66,18 +66,18 @@ def profile(user_id: int):
             return {"user_info": user_info, "user_goat": user_goat, "user_lists": user_lists}
 
 @app.get('/{user_id}/profile/lists')
-def profile_lists():
+def profile_lists(user_id: int):
     with psycopg.connect(DATABASE_URL) as conn:
         with conn.cursor(row_factory = dict_row) as cur:
             cur.execute("""
             SELECT l.*
             FROM lists l
-            WHERE l.user_id = 1;
-            """)
+            WHERE l.user_id = %s;
+            """, (user_id,))
             return cur.fetchall()
 
 @app.get('/{user_id}/profile/lists/{list_id}')
-def list_content(list_id: int):
+def list_content(user_id: int, list_id: int):
     with psycopg.connect(DATABASE_URL) as conn:
         with conn.cursor(row_factory = dict_row) as cur:
             cur.execute(""" 
@@ -88,8 +88,8 @@ def list_content(list_id: int):
                 ON l.list_id = pl.list_id
             JOIN manga m
                 ON pl.manga_id = m.id
-            WHERE l.user_id = 1 AND l.list_id = %s
-            """, (list_id,))
+            WHERE l.user_id = %s AND l.list_id = %s
+            """, (user_id, list_id,))
             return cur.fetchall()
 
 @app.post('/register')
@@ -97,11 +97,18 @@ def register(user: User):
     with psycopg.connect(DATABASE_URL) as conn:
         with conn.cursor(row_factory = dict_row) as cur:
             cur.execute("""
-            INSERT INTO registered_user (username,password)
+            INSERT INTO registered_user (username, password)
             VALUES (%s, %s)
             RETURNING user_id
             """, (user.username, user.password))
-            return cur.fetchone()
+            user_id = cur.fetchone()["user_id"]
+
+            cur.execute("""
+            INSERT INTO users (user_id, user_name)
+            VALUES (%s, %s)
+            """, (user_id, user.username,))
+
+            return user_id
 
 @app.post('/login')
 def login(user: User):
@@ -112,4 +119,9 @@ def login(user: User):
             FROM registered_user
             WHERE username = %s AND password = %s
             """, (user.username, user.password))
-            return cur.fetchone()
+            user_login = cur.fetchone()
+
+            if user_login:
+                return user_login
+            else:
+                raise HTTPException(status_code=401, detail="Invalid username or password")
