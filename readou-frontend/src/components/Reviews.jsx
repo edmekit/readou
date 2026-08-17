@@ -1,8 +1,14 @@
-function Reviews(){
+function Reviews({ reviews }) {
     return (
         <div className="review">
-            <h3>Ratings</h3>
-            <p>reviewed</p>
+            <h1>Reviews</h1>
+            {
+                reviews.map((review) => (
+                    <div key={review.rating_id}>{review.title}</div>
+                ))
+            }
+
+            
         </div>
     )
 }

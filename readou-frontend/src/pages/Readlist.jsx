@@ -5,11 +5,13 @@ import Navbar from "../components/Navbar";
 function Readlist() {
     const user_id = localStorage.getItem('user_id');
     const [lists, setLists] = useState([]);
+    const [addList, setAddList] = useState(false);
+    const [list_name, setListName] = useState('');
 
     useEffect(() => {
         async function fetchLists() {
             try {
-                const response = await fetch(`http://127.0.0.1:8000/${user_id}profile/lists`);
+                const response = await fetch(`http://127.0.0.1:8000/${user_id}/profile/lists`);
                 const data = await response.json();
                 setLists(data);
             } catch (error) {
@@ -17,11 +19,26 @@ function Readlist() {
             }
         }
         fetchLists();
-    }, []);
+    }, [lists]);
+
+    async function add_list(e) {
+        e.preventDefault();
+        const response = await fetch('http://127.0.0.1:8000/add_list', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ user_id, list_name })
+        });
+        const data = await response.json();
+        console.log(data);
+    }
 
     return (
-        <div className="bg-slate-400">
+        <div className="">
             <Navbar/>
+            <button className="bg-green-500 p-2 rounded-md"
+            onClick={() => setAddList(true)}>+</button>
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 justify-items-center">
                 {
                     lists.map((list) => (
@@ -29,6 +46,19 @@ function Readlist() {
                     ))
                 }
             </div>
+            {
+                addList && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
+                    <div className="flex flex-col bg-white rounded-xl p-6 w-[550px] shadow-xl ">
+                        <button onClick={() => setAddList(false)}>X</button>
+                        <input type="text" placeholder="List name" 
+                        className=" p-2 m-2 shadow-md" 
+                        onChange={(e) => setListName(e.target.value)}/>
+                        <button
+                        onClick={add_list}>Create List</button>
+                    </div>
+                </div>)
+            }
         </div>
     );
 }

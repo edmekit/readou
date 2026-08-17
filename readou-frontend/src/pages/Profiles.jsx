@@ -10,8 +10,7 @@ function Profiles(){
     const [profile, setProfile] = useState([])
     const [goats, setGoats] = useState([])
     const [lists , setLists] = useState([])
-      
-
+    const [reviews, setReviews] = useState([])
 
         useEffect(() => {
         if (!user_id) {
@@ -25,6 +24,7 @@ function Profiles(){
                     setProfile(data.user_info);
                     setGoats(data.user_goat);
                     setLists(data.user_lists);
+                    setReviews(data.user_reviews);
                 } catch (error) {
                     console.error('Error fetching profiles:', error);
                 }
@@ -52,7 +52,7 @@ function Profiles(){
                     </div>
                     <div className="flex flex-row justify-center items-center gap-15">
                         <Lists lists={lists}/>
-                        <Reviews/>
+                        <Reviews reviews={reviews}/>
                     </div>
                 </div>
             </div>

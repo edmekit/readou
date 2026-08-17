@@ -44,8 +44,9 @@ function Stories(){
 
             {selectedStory && (
             <ReviewCard
+                user_id={user_id}
                 story={selectedStory}
-                        onClose={() => setSelectedStory(null)}/>
+                onClose={() => setSelectedStory(null)}/>
             )}
         </div>
     )

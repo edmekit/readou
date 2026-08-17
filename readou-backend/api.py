@@ -10,7 +10,15 @@ class User(BaseModel):
     username: str
     password: str
 
+class Review(BaseModel):
+    user_id: int
+    story_id: int
+    rating: int
+    review: str
 
+class List(BaseModel):
+    user_id: int
+    list_name: str
 
 load_dotenv()
 
@@ -63,7 +71,22 @@ def profile(user_id: int):
             """, (user_id,))
             user_lists = cur.fetchall()
 
-            return {"user_info": user_info, "user_goat": user_goat, "user_lists": user_lists}
+            cur.execute(
+                """
+            SELECT
+                r.rating_id,
+                r.user_id,
+                r.manga_id,
+                r.rating,
+                r.review,
+                m.title
+            FROM rating r
+            JOIN manga m ON r.manga_id = m.id
+            WHERE r.user_id = %s
+            """, (user_id,))
+            user_reviews = cur.fetchall()
+
+            return {"user_info": user_info, "user_goat": user_goat, "user_lists": user_lists, "user_reviews": user_reviews}
 
 @app.get('/{user_id}/profile/lists')
 def profile_lists(user_id: int):
@@ -125,3 +148,21 @@ def login(user: User):
                 return user_login
             else:
                 raise HTTPException(status_code=401, detail="Invalid username or password")
+
+@app.post('/stories/add_review')
+def add_review(review: Review):
+    with psycopg.connect(DATABASE_URL) as conn:
+        with conn.cursor(row_factory = dict_row) as cur:
+            cur.execute("""
+            INSERT INTO rating (user_id, manga_id, rating, review)
+            VALUES (%s, %s, %s, %s)
+            """, (review.user_id, review.story_id, review.rating, review.review))
+
+@app.post('/add_list')
+def add_list(list: List):
+    with psycopg.connect(DATABASE_URL) as conn:
+        with conn.cursor(row_factory = dict_row) as cur:
+            cur.execute("""
+            INSERT INTO lists (user_id, list_name)
+            VALUES (%s, %s)
+            """, (list.user_id, list.list_name))
