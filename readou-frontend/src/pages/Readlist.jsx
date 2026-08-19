@@ -39,7 +39,7 @@ function Readlist() {
             <Navbar/>
             <button className="bg-green-500 p-2 rounded-md"
             onClick={() => setAddList(true)}>+</button>
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 justify-items-center">
+            <div className="flex flex-col">
                 {
                     lists.map((list) => (
                         <Link key={list.list_id}to={`/profile/lists/${list.list_id}`}>{list.list_name}</Link>

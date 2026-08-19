@@ -6,6 +6,7 @@ import Readlist from "./pages/Readlist.jsx"
 import ListContent from "./pages/ListContent.jsx"
 import Register from "./pages/Register.jsx"
 import Login from "./pages/Login.jsx"
+import Ratings from "./pages/Ratings.jsx"
 
 function App(){
     return (
@@ -18,6 +19,7 @@ function App(){
             <Route path="/stories" element={<Stories/>}/>
             <Route path="/profile/lists" element={<Readlist/>}/>
             <Route path="/profile/lists/:list_id" element={<ListContent/>}/>
+            <Route path="/reviews" element={<Ratings/>}/>
         </Routes>
         </BrowserRouter>
     )

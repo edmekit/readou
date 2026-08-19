@@ -83,10 +83,30 @@ def profile(user_id: int):
             FROM rating r
             JOIN manga m ON r.manga_id = m.id
             WHERE r.user_id = %s
+            LIMIT 3
             """, (user_id,))
             user_reviews = cur.fetchall()
 
             return {"user_info": user_info, "user_goat": user_goat, "user_lists": user_lists, "user_reviews": user_reviews}
+
+@app.get('/{user_id}/reviews')
+def get_reviews(user_id: int):
+    with psycopg.connect(DATABASE_URL) as conn:
+        with conn.cursor(row_factory = dict_row) as cur:
+            cur.execute("""
+            SELECT
+                r.rating_id,
+                r.user_id,
+                r.manga_id,
+                r.rating,
+                r.review,
+                m.title,
+                m.cover_url
+            FROM rating r
+            JOIN manga m ON r.manga_id = m.id
+            WHERE r.user_id = %s
+            """, (user_id,))
+            return cur.fetchall()
 
 @app.get('/{user_id}/profile/lists')
 def profile_lists(user_id: int):

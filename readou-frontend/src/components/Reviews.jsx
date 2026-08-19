@@ -1,7 +1,9 @@
+import { Link } from "react-router-dom"
+
 function Reviews({ reviews }) {
     return (
         <div className="review">
-            <h1>Reviews</h1>
+            <Link to="/reviews">Reviews</Link>
             {
                 reviews.map((review) => (
                     <div key={review.rating_id}>{review.title}</div>
