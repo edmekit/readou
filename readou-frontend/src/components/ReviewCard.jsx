@@ -21,7 +21,7 @@ function ReviewCard({ user_id, story, onClose }) {
 
     return (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
-            <div className="flex flex-row bg-white rounded-xl p-6 w-[550px] shadow-xl ">
+            <div className="flex flex-row bg-[#202830] rounded-xl p-6 w-[550px] shadow-xl ">
                 <div>
                     <img className="w-64 h-96" 
                     src={story.cover_url}/>

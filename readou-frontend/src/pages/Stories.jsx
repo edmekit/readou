@@ -21,25 +21,28 @@ function Stories(){
     const visibleStories = search === "" ? stories : filteredStories;
 
     return (
-        <div>
+        <div className="min-h-screen bg-[#202830]">
             <Navbar/>
-            <input type="text" value={search} 
-            onChange= {(e) => setSearch(e.target.value)} placeholder="Search" 
-            className="border-1 border-black rounded-[20px] p-2 m-2 shadow-md" />
 
-            {
-                visibleStories.length > 0 ? 
-                (<div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5">
-                    {visibleStories.map((story) => (
-                        <StoryCard key={story.id} story={story}
-                        onClick={() => setSelectedStory(story)}/>
-                    ))}
-                </div>)
-                :
-                (<div className="flex flex-col justify-center items-center w-full h-130 text-gray-400 text-2xl">
-                    <h1>No stories found</h1>
-                </div>)
-            }
+
+            <div className="flex flex-col justify-between items-center p-4 bg-[#202830]">
+                <input type="text" value={search} 
+                onChange= {(e) => setSearch(e.target.value)} placeholder="Search" 
+                className="border-1 border-black bg-white rounded-[20px] p-2 m-2 shadow-md" />
+                {
+                    visibleStories.length > 0 ? 
+                    (<div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-8">
+                        {visibleStories.map((story) => (
+                            <StoryCard key={story.id} story={story}
+                            onClick={() => setSelectedStory(story)}/>
+                        ))}
+                    </div>)
+                    :
+                    (<div className="flex flex-col justify-center items-center w-full h-130 text-gray-400 text-2xl">
+                        <h1>No stories found</h1>
+                    </div>)
+                }
+            </div>
 
 
             {selectedStory && (

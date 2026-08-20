@@ -7,8 +7,8 @@ function Navbar(){
     }
 
     return (
-        <nav className="flex justify-between items-center p-4 bg-slate-500">
-            <Link to ="/community" className="text-2xl font-bold">
+        <nav className="flex justify-between items-center p-4 bg-[#202830] text-[#D8E0E8] font-bold">
+            <Link to ="/community" className="text-2xl">
                 Readou
             </Link>
             <div className="flex gap-6">
