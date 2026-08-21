@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 function Login() {
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
@@ -25,24 +25,35 @@ function Login() {
             console.log("stored user_id:", data.user_id);
             navigate('/profile');
         } else {
-            setError('Invalid username or password');
+            setError('Account not found. Register instead.');
             console.log("No user_id returned from backend");
         }
     }
 
     return (
-        <div className="flex flex-col items-center justify-center h-screen">
+        <div className="flex flex-col items-center justify-center h-screen bg-[#14181C]">
             {error && <p className="text-red-500">{error}</p>}
-            <form className="flex flex-col border-2 border-black p-5 w-100 h-90"
+            <form className="flex flex-col 
+            items-center p-5 bg-[#202830] text-white"
             onSubmit={(e) => login(e)}>
-                <input type="text" value={username}
+                <input type="text" 
+                className="w-full m-5 p-5"
+                value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="Username" />
-                <input type="password" value={password} 
+                <input type="password" value={password}
+                className="w-full m-5 p-5"
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Password" />
-                <button type="submit">Login</button>
+                <button type="submit"
+                    className="bg-[#8a00c4] text-white hover:shadow-[0_0_25px_#8a00c4] min-w-[180px] p-3 m-5 rounded-full">Login</button>
+                <button
+                className="bg-cyan-500 text-white hover:shadow-[0_0_25px_#22d3ee] min-w-[180px] p-3 rounded-full"
+                onClick={() => {
+                    navigate('/register');
+                }}>Register</button>
             </form>
+ 
         </div>
 
     )

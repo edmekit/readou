@@ -18,18 +18,26 @@ function Register() {
     }
 
     return (
-        <div className="flex flex-col items-center justify-center h-screen">
-            <Link to ="/login">Login</Link>
-        <form className="flex flex-col border-2 border-black p-5 w-100 h-90"
-        onSubmit={register}>
-            <input type="text" value={username}
-             onChange={(e) => setUsername(e.target.value)}
-            placeholder="Username" />
-            <input type="password" value={password} 
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password" />
-            <button type="submit">Register</button>
-        </form>
+        <div className="flex flex-col items-center justify-center h-screen bg-[#14181C]">
+            <form className="flex flex-col 
+            items-center p-5  bg-[#202830] text-white rounded-xl"
+            onSubmit={(e) => login(e)}>
+                <input type="text" 
+                className="w-full m-5 p-5"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Username" />
+                <input type="password" value={password}
+                className="w-full m-3 p-5"
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password" />
+                <button
+                className="bg-cyan-500 text-white hover:shadow-[0_0_25px_#22d3ee] min-w-[180px] p-3 rounded-full"
+                onClick={() => {
+                    navigate('/register');
+                }}>Register</button>
+            </form>
+ 
         </div>
     )
 }
