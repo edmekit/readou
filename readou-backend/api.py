@@ -176,6 +176,9 @@ def add_review(review: Review):
             cur.execute("""
             INSERT INTO rating (user_id, manga_id, rating, review)
             VALUES (%s, %s, %s, %s)
+            ON CONFLICT (manga_id) DO UPDATE SET 
+                rating = EXCLUDED.rating, 
+                review = EXCLUDED.review
             """, (review.user_id, review.story_id, review.rating, review.review))
 
 @app.post('/add_list')

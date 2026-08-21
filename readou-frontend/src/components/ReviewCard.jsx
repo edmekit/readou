@@ -36,7 +36,7 @@ function ReviewCard({ user_id, story, onClose }) {
                             <button
                                 key={star}
                                 onClick={() => setRating(star)}
-                                className="star text-3xl"
+                                className="star text-cyan-500 text-5xl leading-none transition-transform duration-150 hover:scale-125 hover:drop-shadow-[0_0_10px_#22d3ee]"
                             >
                                 {star <= rating ? "★" : "☆"}
                             </button>
@@ -44,11 +44,11 @@ function ReviewCard({ user_id, story, onClose }) {
                     </div>
                     <textarea type="text" placeholder={`Thoughts on ${story.title}`}
                     value={review} onChange={(e) => setReview(e.target.value)} 
-                    className="h-20 w-50 p-2 bg-gray-100 rounded-xl review-text" />
+                    className="bg-[#29343d] text-white h-20 w-50 p-2 rounded-xl review-text " />
                     <button
                     onClick={addReview} 
-                    className="bg-green-300 p-3 m-5">Submit review</button>
-                    <button className="bg-blue-300 p-3 m-5">Add to a list</button>
+                    className="bg-[#8a00c4] text-white hover:shadow-[0_0_25px_#8a00c4] min-w-[180px] p-3 m-5">Submit review</button>
+                    <button className="bg-cyan-500 text-white hover:shadow-[0_0_25px_#22d3ee] min-w-[180px] p-3">Add to a list</button>
                 </div>
             </div>
         </div>
