@@ -1,27 +1,73 @@
 import { useState } from "react";
-
+import { motion } from "motion/react";
 function ReviewCard({ user_id, story, onClose }) {
     const ratings = [1,2,3,4,5]
     const [rating, setRating] = useState(0);
     const [review, setReview] = useState('');
+    const [error, setError] = useState('')
+    const [loading, setLoading] = useState(false)
     
     async function addReview(e) {
         e.preventDefault();
-        const response = await fetch('http://127.0.0.1:8000/stories/add_review', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ user_id, story_id: story.id, rating, review})
-        });
-        const data = await response.json();
-        console.log(data);
+        setLoading(true)
+        try {
+            const response = await fetch('http://127.0.0.1:8000/stories/add_review', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ user_id, story_id: story.id, rating, review})
+            });
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data);
+                onClose();
+            } else {
+                setError('Something went wrong.' + response.status);
+            }
+        } catch (error){
+            setError('Something went wrong.')
+        }  finally {
+            setLoading(false)
+        }
     }
 
+    async function addGoat(e){
+        e.preventDefault();
+        setLoading(true)
+        try {
+            const response = await fetch('http://127.0.0.1:8000/add_goat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ user_id, manga_id: story.id })
+            });
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data);
+                onClose();
+            } else {
+                setError('Something went wrong.' + response.status);
+            }
+        } catch (error){
+            setError('Something went wrong.')
+        }  finally {
+            setLoading(false)
+        }
+    }
 
     return (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
-            <div className="flex flex-row bg-[#202830] rounded-xl p-6 w-[550px] shadow-xl ">
+        <motion.div 
+        className="fixed inset-0 bg-black/50 flex items-center justify-center">
+            <motion.div
+            layoutId={story.id}
+                transition={{
+                    type: "spring",
+                    stiffness: 180,
+                    damping: 30
+                }} 
+            className="flex flex-row bg-[#202830] rounded-xl p-6 w-[550px] shadow-xl ">
                 <div>
                     <img className="w-64 h-96" 
                     src={story.cover_url}/>
@@ -47,11 +93,19 @@ function ReviewCard({ user_id, story, onClose }) {
                     className="bg-[#29343d] text-white h-20 w-50 p-2 rounded-xl review-text " />
                     <button
                     onClick={addReview} 
-                    className="bg-[#8a00c4] text-white hover:shadow-[0_0_25px_#8a00c4] min-w-[180px] p-3 m-5">Submit review</button>
-                    <button className="bg-cyan-500 text-white hover:shadow-[0_0_25px_#22d3ee] min-w-[180px] p-3">Add to a list</button>
+                    disabled={loading}
+                    className="bg-[#8a00c4] text-white hover:shadow-[0_0_25px_#8a00c4] min-w-[180px] p-3 m-5">
+                        {loading ? 'Submitting...' : 'Submit'}
+                    </button>
+                    <button 
+                    disabled={loading}
+                    onClick={addGoat}
+                    className="bg-cyan-500 text-white hover:shadow-[0_0_25px_#22d3ee] min-w-[180px] p-3">
+                        {loading ? 'Submitting...' : 'Goat'}
+                    </button>
                 </div>
-            </div>
-        </div>
+            </motion.div>
+        </motion.div>
     )
 }
 

@@ -1,21 +1,31 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 function Register() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
+    const navigate = useNavigate();
+
     async function register(e) {
         e.preventDefault();
-        const response = await fetch('http://127.0.0.1:8000/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ username, password })
-        });
-        const data = await response.json();
-        console.log(data);
+        setLoading(true)
+        try {
+            const response = await fetch('http://127.0.0.1:8000/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, password })
+            });
+            const data = await response.json();
+            console.log(data);
+    } catch (error) {
+        setError('Something went wrong.')
+    } finally {
+        setLoading(false)
     }
+}
 
     return (
         <div className="flex flex-col items-center justify-center h-screen bg-[#14181C]">
@@ -32,12 +42,15 @@ function Register() {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Password" />
                 <button
+                disabled={loading}
                 className="bg-cyan-500 text-white hover:shadow-[0_0_25px_#22d3ee] min-w-[180px] p-3 rounded-full"
                 onClick={() => {
-                    navigate('/register');
-                }}>Register</button>
+                    register();
+                    navigate('/')
+                }}>
+                    {loading ? 'Registering...' : 'Register'}
+                </button>
             </form>
- 
         </div>
     )
 }

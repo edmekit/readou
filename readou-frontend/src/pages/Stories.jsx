@@ -2,12 +2,37 @@ import Navbar from "../components/Navbar";
 import StoryCard from "../components/StoryCard";
 import ReviewCard from "../components/ReviewCard";
 import { useState, useEffect, useMemo } from "react";
+import { motion } from "motion/react";
 
 function Stories(){
     const user_id = localStorage.getItem('user_id');
     const [stories, setStories] = useState([])
     const [selectedStory, setSelectedStory] = useState(null);
     const [search, setSearch] = useState('');
+    const container = {
+        "hidden": {
+            opacity: 1,
+        },
+        "visible": {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.07
+            }
+        }
+    }
+
+    const item = {
+        "hidden": {
+            opacity: 0,
+            x: 20
+        },
+        "visible": {
+            opacity: 1,
+            x: 0
+        }
+    }
+
+
     useEffect(() => {
         fetch(`http://127.0.0.1:8000/stories`)
         .then(res => res.json())
@@ -30,12 +55,18 @@ function Stories(){
                 className="border-1 border-black bg-white rounded-[20px] p-2 m-2 shadow-md" />
                 {
                     visibleStories.length > 0 ? 
-                    (<div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-8">
+                    (<motion.div
+                    variants={container}
+                    initial="hidden"
+                    animate="visible"
+                    className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-8">
                         {visibleStories.map((story) => (
-                            <StoryCard key={story.id} story={story}
+                            <StoryCard
+                            variants={item}
+                            key={story.id} story={story}
                             onClick={() => setSelectedStory(story)}/>
                         ))}
-                    </div>)
+                    </motion.div>)
                     :
                     (<div className="flex flex-col justify-center items-center w-full h-130 text-gray-400 text-2xl">
                         <h1>No stories found</h1>
