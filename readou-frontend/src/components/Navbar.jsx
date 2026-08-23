@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom"
 function Navbar(){
     const navigate = useNavigate();
     function logout(){
-        localStorage.removeItem('user_id');
+        localStorage.removeItem('token');
         navigate('/');
     }
 

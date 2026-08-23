@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "motion/react";
-function ReviewCard({ user_id, story, onClose }) {
+function ReviewCard({ story, onClose }) {
+    const token = localStorage.getItem('token')
     const ratings = [1,2,3,4,5]
     const [rating, setRating] = useState(0);
     const [review, setReview] = useState('');
@@ -11,12 +12,13 @@ function ReviewCard({ user_id, story, onClose }) {
         e.preventDefault();
         setLoading(true)
         try {
-            const response = await fetch('http://127.0.0.1:8000/stories/add_review', {
+            const response = await fetch('http://127.0.0.1:8000/add_review', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization' :`Bearer ${token}`
                 },
-                body: JSON.stringify({ user_id, story_id: story.id, rating, review})
+                body: JSON.stringify({ story_id: story.id, rating, review})
             });
             if (response.ok) {
                 const data = await response.json();
@@ -39,9 +41,10 @@ function ReviewCard({ user_id, story, onClose }) {
             const response = await fetch('http://127.0.0.1:8000/add_goat', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    "Authorization" : `Bearer ${token}`
                 },
-                body: JSON.stringify({ user_id, manga_id: story.id })
+                body: JSON.stringify({  manga_id: story.id })
             });
             if (response.ok) {
                 const data = await response.json();

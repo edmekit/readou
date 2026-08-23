@@ -5,7 +5,6 @@ import { useState, useEffect, useMemo } from "react";
 import { motion } from "motion/react";
 
 function Stories(){
-    const user_id = localStorage.getItem('user_id');
     const [stories, setStories] = useState([])
     const [selectedStory, setSelectedStory] = useState(null);
     const [search, setSearch] = useState('');
@@ -77,7 +76,6 @@ function Stories(){
 
             {selectedStory && (
             <ReviewCard
-                user_id={user_id}
                 story={selectedStory}
                 onClose={() => setSelectedStory(null)}/>
             )}

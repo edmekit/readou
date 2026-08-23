@@ -22,9 +22,8 @@ function Login() {
             const data = await response.json();
             console.log("login response:", data);
 
-            if (response.ok && data && data.user_id) {
-                localStorage.setItem('user_id', String(data.user_id));
-                console.log("stored user_id:", data.user_id);
+            if (response.ok && data && data.token) {
+                localStorage.setItem('token', String(data.token));
                 navigate('/profile');
             } else {
                 setError('Account not found. Register instead.');

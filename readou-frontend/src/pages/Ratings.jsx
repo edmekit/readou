@@ -3,7 +3,7 @@ import { useState, useEffect } from "react"
 import { motion } from "motion/react"
 
 function Ratings(){
-    const user_id = localStorage.getItem('user_id');
+    const token = localStorage.getItem('token');
     const [ratings, setRatings] = useState([])
     const stars = [1, 2, 3, 4, 5];
     const container = {
@@ -31,7 +31,12 @@ function Ratings(){
 
 
     useEffect(() => {
-        fetch(`http://127.0.0.1:8000/${user_id}/reviews`)
+        fetch(`http://127.0.0.1:8000/reviews`,{
+            headers : {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        })
         .then(res => res.json())
         .then(data => setRatings(data))
     }, [])

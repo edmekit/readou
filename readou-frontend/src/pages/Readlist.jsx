@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 
 function Readlist() {
-    const user_id = localStorage.getItem('user_id');
+    const token = localStorage.getItem('token');
     const [lists, setLists] = useState([]);
     const [addList, setAddList] = useState(false);
     const [list_name, setListName] = useState('');
@@ -11,7 +11,12 @@ function Readlist() {
     useEffect(() => {
         async function fetchLists() {
             try {
-                const response = await fetch(`http://127.0.0.1:8000/${user_id}/profile/lists`);
+        const response = await fetch(`http://127.0.0.1:8000/profile/lists`,{
+                    headers : {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
                 const data = await response.json();
                 setLists(data);
             } catch (error) {
@@ -28,7 +33,7 @@ function Readlist() {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ user_id, list_name })
+            body: JSON.stringify({ list_name })
         });
         const data = await response.json();
         console.log(data);
