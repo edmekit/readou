@@ -9,7 +9,10 @@ from passlib.context import CryptContext
 from jose import jwt, JWTError
 from fastapi.security import OAuth2PasswordBearer
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+pwd_context = CryptContext(
+    schemes=["bcrypt"],
+    deprecated="auto",
+)
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
@@ -189,11 +192,17 @@ def login(user: User):
     with psycopg.connect(DATABASE_URL) as conn:
         with conn.cursor(row_factory = dict_row) as cur:
             cur.execute("""
-            SELECT user_id,password
+            SELECT user_id, password
             FROM registered_user
             WHERE username = %s
             """, (user.username,))
             user_login = cur.fetchone()
+            
+            if not user_login:
+                raise HTTPException(
+                    status_code=401,
+                    detail="Invalid username or password"
+                )
 
             if not pwd_context.verify(user.password, user_login["password"]):
                 raise HTTPException(status_code=401, detail="Invalid username or password")

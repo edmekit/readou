@@ -20,10 +20,9 @@ function Login() {
                 body: JSON.stringify({ username, password })
             });
             const data = await response.json();
-            console.log("login response:", data);
 
             if (response.ok && data && data.token) {
-                localStorage.setItem('token', String(data.token));
+                localStorage.setItem('token', data.token);
                 navigate('/profile');
             } else {
                 setError('Account not found. Register instead.');

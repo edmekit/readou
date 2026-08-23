@@ -6,11 +6,15 @@ function ReviewCard({ story, onClose }) {
     const [rating, setRating] = useState(0);
     const [review, setReview] = useState('');
     const [error, setError] = useState('')
-    const [loading, setLoading] = useState(false)
     
+    const [rateloading, setRateLoading] = useState(false)
+    const [goatloading, setGoatLoading] = useState(false)
+    const [reviewed, setReviewed] = useState(false)
+    const [goated, setGoated] = useState(false)
+
     async function addReview(e) {
         e.preventDefault();
-        setLoading(true)
+        setRateLoading(true)
         try {
             const response = await fetch('http://127.0.0.1:8000/add_review', {
                 method: 'POST',
@@ -23,20 +27,20 @@ function ReviewCard({ story, onClose }) {
             if (response.ok) {
                 const data = await response.json();
                 console.log(data);
-                onClose();
+                setReviewed(true)
             } else {
                 setError('Something went wrong.' + response.status);
             }
         } catch (error){
             setError('Something went wrong.')
         }  finally {
-            setLoading(false)
+            setRateLoading(false)
         }
     }
 
     async function addGoat(e){
         e.preventDefault();
-        setLoading(true)
+        setGoatLoading(true)
         try {
             const response = await fetch('http://127.0.0.1:8000/add_goat', {
                 method: 'POST',
@@ -49,16 +53,22 @@ function ReviewCard({ story, onClose }) {
             if (response.ok) {
                 const data = await response.json();
                 console.log(data);
-                onClose();
+                setGoated(true)
             } else {
                 setError('Something went wrong.' + response.status);
             }
         } catch (error){
             setError('Something went wrong.')
         }  finally {
-            setLoading(false)
+            setGoatLoading(false)
         }
     }
+
+    function handleClose(e){
+        e.preventDefault();
+        onClose()
+    }
+
 
     return (
         <motion.div 
@@ -96,16 +106,24 @@ function ReviewCard({ story, onClose }) {
                     className="bg-[#29343d] text-white h-20 w-50 p-2 rounded-xl review-text " />
                     <button
                     onClick={addReview} 
-                    disabled={loading}
+                    disabled={rateloading || goatloading}
                     className="bg-[#8a00c4] text-white hover:shadow-[0_0_25px_#8a00c4] min-w-[180px] p-3 m-5">
-                        {loading ? 'Submitting...' : 'Submit'}
+                        { reviewed ?
+                           'Reviewed' :
+                            rateloading ? 'Submitting...' : 'Review'
+                        }
                     </button>
                     <button 
-                    disabled={loading}
+                    disabled={goatloading || rateloading}
                     onClick={addGoat}
                     className="bg-cyan-500 text-white hover:shadow-[0_0_25px_#22d3ee] min-w-[180px] p-3">
-                        {loading ? 'Submitting...' : 'Goat'}
+                        { goated ?
+                            'Goated' :
+                            goatloading ? 'Submitting...' : 'Goat'
+                        }
                     </button>
+                    <button 
+                    onClick={handleClose}>Done</button>
                 </div>
             </motion.div>
         </motion.div>
