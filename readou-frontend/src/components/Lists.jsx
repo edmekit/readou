@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 
 function Lists({ lists }) {
     return (
-        <div className="flex flex-col list">
+        <div className="flex flex-col items-center list ">
             <Link to="/profile/lists">Lists </Link>
             {
                 lists.map((list) => (

@@ -110,7 +110,8 @@ def profile(user_id: int = Depends(get_user)):
                 r.manga_id,
                 r.rating,
                 r.review,
-                m.title
+                m.title,
+                m.cover_url
             FROM rating r
             JOIN manga m ON r.manga_id = m.id
             WHERE r.user_id = %s

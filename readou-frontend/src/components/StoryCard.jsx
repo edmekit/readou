@@ -4,6 +4,7 @@ function StoryCard({ variants ,story, onClick }) {
         <motion.div
             variants={variants}
             layoutId={story.id}
+            whileHover={{ scale: 1.1 }}
             transition={{
                 type: "spring",
                 stiffness: 180,
@@ -11,7 +12,7 @@ function StoryCard({ variants ,story, onClick }) {
             }}
             className="flex flex-col p-2 cursor-pointer bg-[#202830] "
             onClick={onClick}> 
-                <img className="w-[150px] h-[210px]" 
+                <img className="w-[150px] h-[220px]" 
                 src={story.cover_url}/>
         </motion.div>
     )
