@@ -38,7 +38,7 @@ function Ratings(){
         })
         .then(res => res.json())
         .then(data => setRatings(data))
-    }, [])
+    }, [ratings])
 
     return(
         <div className="min-h-screen bg-[#14181C] text-white">

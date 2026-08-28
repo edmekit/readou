@@ -106,20 +106,20 @@ function ReviewCard({ story, onClose }) {
                     className="bg-[#29343d] text-white h-20 w-50 p-2 rounded-xl review-text " />
                     <button
                     onClick={addReview} 
-                    disabled={rateloading || goatloading}
+                    disabled={rateloading || goatloading || reviewed}
                     className="bg-[#8a00c4] text-white hover:shadow-[0_0_25px_#8a00c4] min-w-[180px] p-3 m-5">
                         { reviewed ?
                            'Reviewed' :
-                            rateloading ? 'Submitting...' : 'Review'
+                            rateloading ? 'Reviewing' : 'Review'
                         }
                     </button>
                     <button 
-                    disabled={goatloading || rateloading}
+                    disabled={goatloading || rateloading || goated}
                     onClick={addGoat}
                     className="bg-cyan-500 text-white hover:shadow-[0_0_25px_#22d3ee] min-w-[180px] p-3">
                         { goated ?
                             'Goated' :
-                            goatloading ? 'Submitting...' : 'Goat'
+                            goatloading ? 'Adding to goat list' : 'Goat'
                         }
                     </button>
                     <button 

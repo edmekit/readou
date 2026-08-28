@@ -5,6 +5,12 @@
     height: 300px;
 }
 
+.list {
+    margin: 5px 5px 5px 0px;
+    display: flex;
+    flex-direction: column;
+}
+
 
 .star{
     margin: 0px 0px 10px 0px;

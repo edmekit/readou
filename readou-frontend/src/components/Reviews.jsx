@@ -9,7 +9,7 @@ function Reviews({ reviews }) {
         <div 
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
-        className="review bg-[#39434d]">
+        className="review flex justify-center items-center ">
             <AnimatePresence mode="wait">
                 {hovered ?
                 <motion.div
@@ -18,7 +18,7 @@ function Reviews({ reviews }) {
                 animate = {{ opacity: 1, scale: 1 }}
                 exit = {{ opacity: 0, scale: .9 }}
                 transition = {{ duration: .2 }}
-                className="review bg-[#39434d] flex flex-col justify-center items-center">
+                className="review  flex flex-col justify-center items-center">
                     <p>See all reviews</p>
                     <Link
                     className="text-2xl text-cyan-400 drop-shadow-[0_0_10px_#22d3ee]" 
