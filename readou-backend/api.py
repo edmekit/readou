@@ -115,7 +115,7 @@ def profile(user_id: int = Depends(get_user)):
             FROM rating r
             JOIN manga m ON r.manga_id = m.id
             WHERE r.user_id = %s
-            LIMIT 3
+            LIMIT 4
             """, (user_id,))
             user_reviews = cur.fetchall()
 
