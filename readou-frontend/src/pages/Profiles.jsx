@@ -6,42 +6,7 @@ import Navbar from "../components/Navbar.jsx"
 import { useState, useEffect } from "react"
 import ProfileLoading from "../components/ProfileLoading.jsx"
 
-function Profiles(){
-    const token = localStorage.getItem('token');
-    const [profile, setProfile] = useState([])
-    const [goats, setGoats] = useState([])
-    const [lists , setLists] = useState([])
-    const [reviews, setReviews] = useState([])
-    const [loading, setLoading] = useState(false);
-
-        useEffect(() => {
-        if (!token) {
-            console.log("No user_id found, user is not logged in");
-            return;
-        }
-            async function fetchProfiles() {
-                setLoading(true);
-                try {
-                    const response = await fetch(`http://127.0.0.1:8000/profile`,{
-                            headers : {
-                                'Content-Type': 'application/json',
-                                'Authorization': `Bearer ${token}`
-                            }
-                        });
-                    const data = await response.json();
-                    setProfile(data.user_info);
-                    setGoats(data.user_goat);
-                    setLists(data.user_lists);
-                    setReviews(data.user_reviews);
-                } catch (error) {
-                    console.error('Error fetching profiles:', error);
-                } finally {
-                    setLoading(false);
-                }
-            }
-            fetchProfiles();
-        }, []);
-
+function Profiles({ profile, goats, lists, reviews, loading }) {
 
         return loading ? (
             <ProfileLoading />

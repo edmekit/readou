@@ -105,6 +105,7 @@ function ReviewCard({ story, onClose }) {
                     value={review} onChange={(e) => setReview(e.target.value)} 
                     className="bg-[#29343d] text-white h-20 w-50 p-2 rounded-xl review-text " />
                     <button
+                    type="button"
                     onClick={addReview} 
                     disabled={rateloading || goatloading || reviewed}
                     className="bg-[#8a00c4] text-white hover:shadow-[0_0_25px_#8a00c4] min-w-[180px] p-3 m-5">
@@ -114,6 +115,7 @@ function ReviewCard({ story, onClose }) {
                         }
                     </button>
                     <button 
+                    type="button"
                     disabled={goatloading || rateloading || goated}
                     onClick={addGoat}
                     className="bg-cyan-500 text-white hover:shadow-[0_0_25px_#22d3ee] min-w-[180px] p-3">

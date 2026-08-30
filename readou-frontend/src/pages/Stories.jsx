@@ -4,8 +4,8 @@ import ReviewCard from "../components/ReviewCard";
 import { useState, useEffect, useMemo } from "react";
 import { motion } from "motion/react";
 
-function Stories(){
-    const [stories, setStories] = useState([])
+function Stories({ stories }) {
+   
     const [selectedStory, setSelectedStory] = useState(null);
     const [search, setSearch] = useState('');
     const container = {
@@ -30,13 +30,6 @@ function Stories(){
             x: 0
         }
     }
-
-
-    useEffect(() => {
-        fetch(`http://127.0.0.1:8000/stories`)
-        .then(res => res.json())
-        .then(data => setStories(data));
-    }, []);
 
     const filteredStories = useMemo(() => {
         return stories.filter(story => story.title.toLowerCase().includes(search.toLowerCase()));

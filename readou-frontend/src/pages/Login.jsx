@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-function Login() {
+function Login({ setToken }) {
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -23,6 +23,7 @@ function Login() {
 
             if (response.ok && data && data.token) {
                 localStorage.setItem('token', data.token);
+                setToken(data.token);
                 navigate('/profile');
             } else {
                 setError('Account not found. Register instead.');

@@ -1,6 +1,10 @@
 import Navbar from "../components/Navbar"
 import { useState, useEffect } from "react"
 import { motion } from "motion/react"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faTrash } from "@fortawesome/free-solid-svg-icons"
+
+  
 
 function Ratings(){
     const token = localStorage.getItem('token');
@@ -29,16 +33,50 @@ function Ratings(){
         }
     }
 
-    useEffect(() => {
-        fetch(`http://127.0.0.1:8000/reviews`,{
-            headers : {
+useEffect(() => {
+    fetchRatings();
+}, []);
+
+async function fetchRatings() {
+    try {
+        const response = await fetch(`http://127.0.0.1:8000/reviews`, {
+            headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             }
-        })
-        .then(res => res.json())
-        .then(data => setRatings(data))
-    }, [ratings])
+        });
+
+        const data = await response.json();
+        setRatings(data);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+async function delete_rating(rating_id) {
+    try {
+        const response = await fetch(
+            `http://127.0.0.1:8000/delete_review/${rating_id}`,
+            {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error("Failed to delete rating");
+        }
+
+        // Fetch the updated ratings
+        await fetchRatings();
+
+    } catch (error) {
+        console.error(error);
+    }
+}
 
     return(
         <div className="min-h-screen bg-[#14181C] text-white">
@@ -67,6 +105,11 @@ function Ratings(){
                                     </button> ))} 
                             </div> 
                             <h2>{rating.review}</h2>
+                            <button type="button"
+                            onClick={() => delete_rating(rating.rating_id)} 
+                            aria-label="Delete rating" className="ml-2 text-red-400 hover:text-red-300">
+                                <FontAwesomeIcon icon={faTrash} />
+                            </button>
                         </motion.div>
                     ))}
                 </motion.div>

@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faMinus } from "@fortawesome/free-solid-svg-icons"
 
 function Readlist() {
     const token = localStorage.getItem('token');
@@ -10,8 +12,11 @@ function Readlist() {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        async function fetchLists() {
-            try {
+        fetchLists();
+    }, [lists]);
+
+    async function fetchLists() {
+        try {
         const response = await fetch(`http://127.0.0.1:8000/profile/lists`,{
                     headers : {
                         'Content-Type': 'application/json',
@@ -24,8 +29,6 @@ function Readlist() {
                 console.error('Error fetching lists:', error);
             }
         }
-        fetchLists();
-    }, [lists]);
 
     async function add_list(e) {
         e.preventDefault();
@@ -44,6 +47,19 @@ function Readlist() {
         setLoading(false);
     }
 
+    async function delete_list(list_id) {
+        const response = await fetch(`http://127.0.0.1:8000/delete_list/${list_id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        const data = await response.json();
+        console.log(data);
+        fetchLists();
+    }
+
     return (
         <div className="min-h-screen bg-[#14181C] text-white">
             <Navbar/>
@@ -52,7 +68,16 @@ function Readlist() {
             <div className="flex flex-col">
                 {
                     lists.map((list) => (
-                        <Link key={list.list_id}to={`/profile/lists/${list.list_id}`}>{list.list_name}</Link>
+                        <div
+                        key={list.list_id} 
+                        className="flex justify-between min-h-[50px] w-50">
+                        <Link to={`/profile/lists/${list.list_id}`}>{list.list_name}</Link>
+                        <button
+                        onClick={() => delete_list(list.list_id)} 
+                        className="border-2 rounded-full w-[25px] h-[25px]">
+                            <FontAwesomeIcon icon={faMinus} />
+                        </button>
+                        </div>
                     ))
                 }
             </div>
