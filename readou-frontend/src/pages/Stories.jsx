@@ -4,7 +4,7 @@ import ReviewCard from "../components/ReviewCard";
 import { useState, useEffect, useMemo } from "react";
 import { motion } from "motion/react";
 
-function Stories({ stories }) {
+function Stories({ stories, lists }) {
    
     const [selectedStory, setSelectedStory] = useState(null);
     const [search, setSearch] = useState('');
@@ -70,6 +70,7 @@ function Stories({ stories }) {
             {selectedStory && (
             <ReviewCard
                 story={selectedStory}
+                lists={lists}
                 onClose={() => setSelectedStory(null)}/>
             )}
         </div>

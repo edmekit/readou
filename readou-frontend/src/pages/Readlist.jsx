@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faMinus } from "@fortawesome/free-solid-svg-icons"
+import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons"
+import ListContent from "../components/ListContent";
 
 function Readlist() {
     const token = localStorage.getItem('token');
@@ -47,37 +47,19 @@ function Readlist() {
         setLoading(false);
     }
 
-    async function delete_list(list_id) {
-        const response = await fetch(`http://127.0.0.1:8000/delete_list/${list_id}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
-        });
-        const data = await response.json();
-        console.log(data);
-        fetchLists();
-    }
+
 
     return (
         <div className="min-h-screen bg-[#14181C] text-white">
             <Navbar/>
-            <button className="bg-green-500 p-2 rounded-md"
-            onClick={() => setAddList(true)}>+</button>
+            <button className="bg-green-500 p-2 m-5 rounded-full"
+            onClick={() => setAddList(true)}>
+                <FontAwesomeIcon icon={faPlus} />
+            </button>
             <div className="flex flex-col">
                 {
                     lists.map((list) => (
-                        <div
-                        key={list.list_id} 
-                        className="flex justify-between min-h-[50px] w-50">
-                        <Link to={`/profile/lists/${list.list_id}`}>{list.list_name}</Link>
-                        <button
-                        onClick={() => delete_list(list.list_id)} 
-                        className="border-2 rounded-full w-[25px] h-[25px]">
-                            <FontAwesomeIcon icon={faMinus} />
-                        </button>
-                        </div>
+                        <ListContent list={list} key={list.list_id} fetchLists={fetchLists}  />
                     ))
                 }
             </div>

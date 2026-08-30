@@ -4,7 +4,7 @@ import Profiles from "./pages/Profiles.jsx"
 import Community from "./pages/Community.jsx"
 import Stories from "./pages/Stories.jsx"
 import Readlist from "./pages/Readlist.jsx"
-import ListContent from "./pages/ListContent.jsx"
+import ListContent from "./components/ListContent.jsx"
 import Register from "./pages/Register.jsx"
 import Login from "./pages/Login.jsx"
 import Ratings from "./pages/Ratings.jsx"
@@ -59,7 +59,7 @@ function App(){
             <Route path="/" element={<Login setToken={setToken}/>}/>
             <Route path="/profile" element={<Profiles profile={profile} goats={goats} lists={lists} reviews={reviews} loading={loading}/>}/>
             <Route path="/community" element={<Community/>}/>
-            <Route path="/stories" element={<Stories stories={stories}/>}/>
+            <Route path="/stories" element={<Stories stories={stories} lists={lists}/>}/>
             <Route path="/profile/lists" element={<Readlist/>}/>
             <Route path="/profile/lists/:list_id" element={<ListContent/>}/>
             <Route path="/reviews" element={<Ratings/>}/>
