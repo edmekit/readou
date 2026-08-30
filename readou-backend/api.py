@@ -244,3 +244,21 @@ def add_goat(goat: Goat, user_id: int = Depends(get_user)):
             INSERT INTO goat (user_id, manga_id)
             VALUES (%s, %s)
             """, (user_id, goat.manga_id))
+
+@app.delete('/delete_review/{rating_id}')
+def delete_rating(rating_id: int, user_id: int = Depends(get_user)):
+    with psycopg.connect(DATABASE_URL) as conn:
+        with conn.cursor(row_factory = dict_row) as cur:
+            cur.execute("""
+            DELETE FROM rating
+            WHERE rating_id = %s AND user_id = %s
+            """, (rating_id, user_id))
+
+@app.delete('/delete_list/{list_id}')
+def delete_list(list_id: int, user_id: int = Depends(get_user)):
+    with psycopg.connect(DATABASE_URL) as conn:
+        with conn.cursor(row_factory = dict_row) as cur:
+            cur.execute("""
+            DELETE FROM lists
+            WHERE list_id = %s AND user_id = %s
+            """, (list_id, user_id))
