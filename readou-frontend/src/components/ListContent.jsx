@@ -37,6 +37,8 @@ function ListContent({ list, fetchLists }) {
                 setListContent(data);
             } catch (error) {
                 console.error('Error fetching list content:', error);
+            } finally {
+                setLoading(false);
             }
         }
 
@@ -69,13 +71,14 @@ function ListContent({ list, fetchLists }) {
                         { loading ? (
                             <p>Loading...</p>
                         ) :
-                        (
-                            listContent.map((goat) => (
-                                <div key={goat.goat_id} className="flex flex-row gap-5">
-                                    <img src={goat.goat_pfp} className="w-[50px] h-[50px] rounded-full" />
-                                    <p>{goat.goat_name}</p>
+                        (<div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-8">
+                            {listContent.map((manga) => (
+                                <div key={manga.title} className="flex flex-row gap-5">
+                                    <img src={manga.cover_url} 
+                                    className="h-[130px] w-[85px] m-2" />
                                 </div>
-                            ))
+                            ))}
+                        </div>
                         )
                     }
                     </div>

@@ -32,6 +32,10 @@ class List(BaseModel):
 class Goat(BaseModel):
     manga_id: int
 
+class ListContent(BaseModel):
+    list_id: int
+    story_id: int
+
 load_dotenv()
 
 DATABASE_URL = os.getenv("DATABASE_URL")
@@ -157,7 +161,8 @@ def list_content(list_id: int, user_id: int = Depends(get_user)):
         with conn.cursor(row_factory = dict_row) as cur:
             cur.execute(""" 
             SELECT
-                m.*
+                m.title,
+                m.cover_url
             FROM lists l
             JOIN per_list pl
                 ON l.list_id = pl.list_id
@@ -244,6 +249,15 @@ def add_goat(goat: Goat, user_id: int = Depends(get_user)):
             INSERT INTO goat (user_id, manga_id)
             VALUES (%s, %s)
             """, (user_id, goat.manga_id))
+
+@app.post('/add_to_list')
+def add_to_list(list_content: ListContent):
+    with psycopg.connect(DATABASE_URL) as conn:
+        with conn.cursor(row_factory = dict_row) as cur:
+            cur.execute("""
+            INSERT INTO per_list (list_id, manga_id)
+            VALUES (%s, %s)
+            """, (list_content.list_id, list_content.story_id))
 
 @app.delete('/delete_review/{rating_id}')
 def delete_rating(rating_id: int, user_id: int = Depends(get_user)):

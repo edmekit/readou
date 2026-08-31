@@ -65,10 +65,30 @@ function ReviewCard({ story, onClose, lists }) {
         }
     }
 
-    function handleClose(e){
-        e.preventDefault();
-        onClose()
+    async function addToList(list_id){
+        setAddToList(true)
+        try {
+            const response = await fetch('http://127.0.0.1:8000/add_to_list', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Authorization" : `Bearer ${token}`
+                },
+                body: JSON.stringify({  list_id, story_id: story.id })
+            });
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data);
+            } else {
+                setError('Something went wrong.' + response.status);
+            }
+        } catch (error){
+            setError('Something went wrong.')
+        }  finally {
+            setAddToList(false)
+        }
     }
+
 
 
     return (
@@ -142,7 +162,8 @@ function ReviewCard({ story, onClose, lists }) {
 
                                 {lists.map((list) => (
                                     <button
-                                        key={list.id}
+                                        key={list.list_id}
+                                        onClick={() => addToList(list.list_id)}
                                         className="w-full text-left text-white p-2 rounded hover:bg-[#a4a5a6]"
                                     >
                                         {list.list_name}
