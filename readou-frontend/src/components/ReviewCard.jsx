@@ -116,7 +116,7 @@ function ReviewCard({ story, onClose, lists }) {
                             <button
                                 key={star}
                                 onClick={() => setRating(star)}
-                                className="star text-cyan-500 text-5xl leading-none transition-transform duration-150 hover:scale-125 hover:drop-shadow-[0_0_10px_#22d3ee]"
+                                className="star text-[#307B8E] text-5xl leading-none transition-transform duration-150 hover:scale-125 hover:drop-shadow-[0_0_10px_#22d3ee]"
                             >
                                 {star <= rating ? "★" : "☆"}
                             </button>
@@ -129,7 +129,7 @@ function ReviewCard({ story, onClose, lists }) {
                     type="button"
                     onClick={addReview} 
                     disabled={rateloading || goatloading || reviewed}
-                    className="bg-[#8a00c4] text-white hover:shadow-[0_0_25px_#8a00c4] min-w-[180px] p-3 m-5">
+                    className="bg-[#A9D3C5] text-white hover:shadow-[0_0_25px_#8a00c4] min-w-[180px] p-3 m-2">
                         { reviewed ?
                            'Reviewed' :
                             rateloading ? 'Reviewing' : 'Review'
@@ -139,17 +139,17 @@ function ReviewCard({ story, onClose, lists }) {
                     type="button"
                     disabled={goatloading || rateloading || goated}
                     onClick={addGoat}
-                    className="bg-cyan-500 text-white hover:shadow-[0_0_25px_#22d3ee] min-w-[180px] p-3">
+                    className="bg-[#307B8E] text-white hover:shadow-[0_0_25px_#22d3ee] min-w-[180px] p-3">
                         { goated ?
                             'Goated' :
                             goatloading ? 'Adding to goat list' : 'Goat'
                         }
                     </button>
-                    <div className="relative">
+                    <div className="relative m-2">
                         <button
                             type="button"
                             onClick={() => setAddToList(!addtoList)}
-                            className="bg-cyan-500 text-white hover:shadow-[0_0_25px_#22d3ee] min-w-[180px] p-3"
+                            className="bg-[#103A57] text-white hover:shadow-[0_0_25px_#22d3ee] min-w-[180px] p-3"
                         >
                             Add to list
                         </button>

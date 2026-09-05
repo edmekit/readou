@@ -52,12 +52,12 @@ function Login({ setToken }) {
                 placeholder="Password" />
                 <button type="submit"
                     disabled={loading}
-                    className="bg-[#8a00c4] text-white hover:shadow-[0_0_25px_#8a00c4] min-w-[180px] p-3 m-5 rounded-full">
+                    className="bg-[#A9D3C5] text-white hover:shadow-[0_0_25px_#8a00c4] min-w-[180px] p-3 m-5 rounded-full">
                         {loading ? 'Logging in...' : 'Login'}
                     </button>
                 <button type="button"
                 disabled={loading}
-                className="bg-cyan-500 text-white hover:shadow-[0_0_25px_#22d3ee] min-w-[180px] p-3 rounded-full"
+                className="bg-[#103A57] text-white hover:shadow-[0_0_25px_#22d3ee] min-w-[180px] p-3 rounded-full"
                 onClick={() => {
                     navigate('/register');
                 }}>Register</button>
